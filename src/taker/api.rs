@@ -92,8 +92,6 @@ pub struct SwapParams {
     /// How many splits
     pub tx_count: u32,
     // TODO: Following two should be moved to TakerConfig as global configuration.
-    /// Confirmation count required for funding txs.
-    pub required_confirms: u32,
 }
 
 // Defines the Taker's position in the current ongoing swap.
@@ -631,7 +629,7 @@ impl Taker {
         // Find next maker's details
         let required_confirmations =
             if self.ongoing_swap_state.taker_position == TakerPosition::LastPeer {
-                self.ongoing_swap_state.swap_params.required_confirms
+                self.config.required_confirms
             } else {
                 self.ongoing_swap_state
                     .peer_infos
