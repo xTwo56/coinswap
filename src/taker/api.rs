@@ -74,7 +74,7 @@ pub(crate) const TCP_TIMEOUT_SECONDS: u64 = 300;
 // TODO: Maker should decide this miner fee
 // This fee is used for both funding and contract txs.
 #[cfg(feature = "integration-test")]
-pub(crate) const MINER_FEE: u64 = 1000;
+pub(crate) const MINER_FEE: Amount = Amount::from_sat(1000);
 
 /// This fee is used for both funding and contract txs.
 #[cfg(not(feature = "integration-test"))]

@@ -47,9 +47,9 @@ impl Default for MakerConfig {
             directory_server_address:
                 "ri3t5m2na2eestaigqtxm3f4u7njy65aunxeh7aftgid3bdeo3bz65qd.onion:8080".to_string(),
             #[cfg(feature = "integration-test")]
-            fidelity_amount: 5_000_000, // 0.05 BTC for tests
+            fidelity_amount: Amount::from_sat(5_000_000), // 0.05 BTC for tests
             #[cfg(feature = "integration-test")]
-            fidelity_timelock: 26_000, // Approx 6 months of blocks for test
+            fidelity_timelock: Height::from_height(26_000), // Approx 6 months of blocks for test
             #[cfg(not(feature = "integration-test"))]
             fidelity_amount: Amount::from_sat(50_000), // 50K sats for production
             #[cfg(not(feature = "integration-test"))]

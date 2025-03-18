@@ -95,7 +95,7 @@ pub const MIN_CONTRACT_REACTION_TIME: RelativeLockTime = RelativeLockTime::from_
 ///
 /// Fee rates are designed to asymptotically approach 5% of the swap amount as the swap amount increases..
 #[cfg(feature = "integration-test")]
-pub const BASE_FEE: u64 = 1000;
+pub const BASE_FEE: Amount = Amount::from_sat(1000);
 #[cfg(feature = "integration-test")]
 pub const AMOUNT_RELATIVE_FEE_PCT: f64 = 2.50;
 #[cfg(feature = "integration-test")]

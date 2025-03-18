@@ -1,6 +1,6 @@
 use std::{net::TcpStream, time::Duration};
 
-use bitcoin::Amount;
+use bitcoin::{Amount, FeeRate};
 use clap::Parser;
 use coinswap::{
     maker::{MakerError, RpcMsgReq, RpcMsgResp},
@@ -57,7 +57,7 @@ enum Commands {
         amount: Amount,
         /// Feerate in sats/vByte. Defaults to 2 sats/vByte
         #[clap(long, short = 'f')]
-        feerate: Option<f64>,
+        feerate: Option<FeeRate>,
     },
     /// Show the server tor address
     ShowTorAddress,
@@ -108,7 +108,7 @@ fn main() -> Result<(), MakerError> {
                 RpcMsgReq::SendToAddress {
                     address,
                     amount,
-                    feerate: DEFAULT_TX_FEE_RATE,
+                    feerate: feerate.unwrap_or(DEFAULT_TX_FEE_RATE),
                 },
             )?;
         }
