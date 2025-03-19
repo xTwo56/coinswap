@@ -1553,7 +1553,7 @@ impl Taker {
     /// Pass around the Maker's multisig privatekeys. Saves all the data in wallet file. This marks
     /// the ends of swap round.
     fn settle_all_swaps(&mut self) -> Result<(), TakerError> {
-        let mut outgoing_privkeys: Option<Vec<MultisigPrivkey>> = None;
+        let mut outgoing_privkeys: Vec<MultisigPrivkey> = Vec::new();
 
         // Because the last peer info is the Taker, we take upto (0..n-1), where n = peer_info.len()
         let maker_addresses = self.ongoing_swap_state.peer_infos
@@ -1669,7 +1669,7 @@ impl Taker {
         &mut self,
         maker_address: &MakerAddress,
         index: usize,
-        outgoing_privkeys: &mut Option<Vec<MultisigPrivkey>>, // TODO: Instead of Option, just take a vector, where empty vector denotes the `None` equivalent.
+        outgoing_privkeys: &mut Vec<MultisigPrivkey>, // TODO: Instead of Option, just take a vector, where empty vector denotes the `None` equivalent.
         senders_multisig_redeemscripts: &[ScriptBuf],
         receivers_multisig_redeemscripts: &[ScriptBuf],
     ) -> Result<(), TakerError> {
@@ -1706,12 +1706,9 @@ impl Taker {
                 })
                 .collect::<Vec<MultisigPrivkey>>()
         } else {
-            assert!(outgoing_privkeys.is_some());
-            let reply = outgoing_privkeys
-                .as_ref()
-                .expect("outgoing privkey expected")
-                .to_vec();
-            *outgoing_privkeys = None;
+            assert!(!outgoing_privkeys.is_empty());
+            let reply = outgoing_privkeys.clone();
+            *outgoing_privkeys = Vec::new();
             reply
         };
         (if self.ongoing_swap_state.taker_position == TakerPosition::LastPeer {
@@ -1727,7 +1724,7 @@ impl Taker {
                     .expect("watchonly coins expected"),
                 &maker_private_key_handover.multisig_privkeys,
             );
-            *outgoing_privkeys = Some(maker_private_key_handover.multisig_privkeys);
+            *outgoing_privkeys = maker_private_key_handover.multisig_privkeys;
             ret
         })?;
         log::info!("===> PrivateKeyHandover | {}", maker_address);
